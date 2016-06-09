@@ -21,3 +21,14 @@
  */
 
 \OCP\App::registerAdmin('theming', 'settings/settings-admin');
+
+$listener = new \OCA\Theming\Init(\OC::$server->getConfig());
+
+\OC::$server->getEventDispatcher()->addListener(
+	\OCP\App\ManagerEvent::EVENT_APP_ENABLE,
+	[$listener, 'prepareThemeFolder']
+);
+
+\OC::$server->getEventDispatcher()->addListener(
+	\OCP\App\ManagerEvent::EVENT_APP_DISABLE,
+	[$listener, 'disableTheme']);
